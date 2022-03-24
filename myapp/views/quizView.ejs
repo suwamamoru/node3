@@ -6,3 +6,40 @@
   <button id="start-button">開始</button>
 </div>
 <div id="answers"></div>
+
+<script>
+  const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
+
+  const titleElement = document.getElementById('title');
+  const questionElement = document.getElementById('question');
+  const answersContainer = document.getElementById('answers');
+  const startButton = document.getElementById('start-button');
+  const genreElement = document.getElementById('genre');
+  const difficultyElement = document.getElementById('difficulty');
+
+  startButton.addEventListener('click', () => {
+    startButton.hidden = true;
+    fetchQuizData(1);
+  });
+
+  const fetchQuizData = async (index) => {
+    titleElement.textContent = '取得中';
+    questionElement.textContent = '少々お待ち下さい';
+    
+    try {
+      const init = { method: 'POST' };
+      const quizInstance = await fetch('/quiz/setData', init);
+      setNextQuiz(quizInstance, index);
+    } catch {
+      titleElement.textContent = '取得失敗'
+      questionElement.textContent = 'クイズデータの読み込みに失敗しました'
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    }
+  };
+
+  const setNextQuiz = (quizInstance, index) => {
+    console.log(quizInstance);
+  }
+</script>
