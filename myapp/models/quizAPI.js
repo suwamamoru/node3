@@ -1,4 +1,4 @@
-const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
+const fetch = require('node-fetch');
 
 class Quiz {
   constructor(quizData) {
@@ -42,13 +42,44 @@ class Quiz {
   }
 }
 
-const responseQuizData = async () => {
+const responseQuizData = async (index) => {
+  const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
   const response = await fetch(API_URL);
   const quizData = await response.json();
   const quizInstance = new Quiz(quizData);
+  return quizInstance;
+
+  //setNextQuiz(quizInstance, index);
 }
 
-module.exports = {
-  Quiz,
-  responseQuizData
-}
+/*
+const setNextQuiz = (quizInstance, index) => {
+  if (index <= quizInstance.getNumOfQuiz()) {
+    makeQuiz(quizInstance, index);
+  } else {
+    finishQuiz(quizInstance);
+  }
+};
+
+const buildAnswers = (quizInstance, index) => {
+  const answers = [
+    quizInstance.getCorrectAnswer(index),
+    ...quizInstance.getIncorrectAnswers(index)
+  ];
+  return shuffleArray(answers);
+};
+
+const shuffleArray = ([...array]) => {
+  for (let i = array.length - 1; i >= 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+*/
+responseQuizData()
+  .then(value => {
+    //console.log(value);
+    module.exports.value = value;
+  })
+  .catch(error => console.log(error))

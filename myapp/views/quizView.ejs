@@ -1,35 +1,32 @@
 <div class="container">
-  <h1 id="title">ようこそ</h1>
-  <p id="genre"></p>
-  <p id="difficulty"></p><hr>
-  <p id="question">以下のボタンをクリック</p><hr>
-  <button id="start-button">開始</button>
+  <form action="/quiz/setData" method="get">
+    <h1 id="title">ようこそ</h1>
+    <p id="genre"></p>
+    <p id="difficulty"></p><hr>
+    <p id="question">以下のボタンをクリック</p><hr>
+    <input type="submit" id="start-button" value="開始">
+  </form>
 </div>
 <div id="answers"></div>
 
 <script>
-  const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
-
   const titleElement = document.getElementById('title');
   const questionElement = document.getElementById('question');
-  const answersContainer = document.getElementById('answers');
   const startButton = document.getElementById('start-button');
-  const genreElement = document.getElementById('genre');
-  const difficultyElement = document.getElementById('difficulty');
 
   startButton.addEventListener('click', () => {
     startButton.hidden = true;
     fetchQuizData(1);
   });
 
-  const fetchQuizData = async (index) => {
+  // 開始ボタンを押すとクイズ画面に移ります。
+  const fetchQuizData = async () => {
     titleElement.textContent = '取得中';
     questionElement.textContent = '少々お待ち下さい';
     
     try {
-      const init = { method: 'POST' };
-      const quizInstance = await fetch('/quiz/setData', init);
-      setNextQuiz(quizInstance, index);
+      await fetch('/quiz/setData');
+
     } catch {
       titleElement.textContent = '取得失敗'
       questionElement.textContent = 'クイズデータの読み込みに失敗しました'
@@ -38,8 +35,4 @@
       }, 2000);
     }
   };
-
-  const setNextQuiz = (quizInstance, index) => {
-    console.log(quizInstance);
-  }
 </script>
