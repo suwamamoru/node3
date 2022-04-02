@@ -1,72 +1,27 @@
 const fetch = require('node-fetch');
 
-class Quiz {
-  constructor(quizData) {
-    this._quizzes = quizData.results;
-    this._correctAnswersNum = 0;
-  }
-  
-  getQuizCategory(index) {
-    return this._quizzes[index - 1].category;
-  }
-  
-  getQuizDifficulty(index) {
-    return this._quizzes[index - 1].difficulty;
-  }
-  
-  getNumOfQuiz() {
-    return this._quizzes.length;
-  }
-  
-  getQuizQuestion(index) {
-    return this._quizzes[index - 1].question;
-  }
-  
-  getCorrectAnswer(index) {
-    return this._quizzes[index - 1].correct_answer;
-  }
-  
-  getIncorrectAnswers(index) {
-    return this._quizzes[index - 1].incorrect_answers;
-  }
-  
-  countCorrectAnswersNum(index, answer) {
-    const correctAnswer = this._quizzes[index - 1].correct_answer;
-    if (answer === correctAnswer) {
-      return this._correctAnswersNum++;
-    }
-  }
-  
-  getCorrectAnswersNum() {
-    return this._correctAnswersNum;
-  }
-}
-
-const responseQuizData = async (index) => {
+const responseQuizData = async () => {
   const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
   const response = await fetch(API_URL);
   const quizData = await response.json();
-  const quizInstance = new Quiz(quizData);
-  return quizInstance;
-
-  //setNextQuiz(quizInstance, index);
+  buildAnswers(quizData);
+  return quizData;
 }
 
-/*
-const setNextQuiz = (quizInstance, index) => {
-  if (index <= quizInstance.getNumOfQuiz()) {
-    makeQuiz(quizInstance, index);
-  } else {
-    finishQuiz(quizInstance);
-  }
-};
+const buildAnswers = (quizData) => {
+  const answers = [];
+  quizData.results.forEach(value => {
+    value.incorrect_answers.forEach(incorrect => {
+      answers.push(incorrect);
+    });
+    answers.push(value.correct_answer);
+  });
 
-const buildAnswers = (quizInstance, index) => {
-  const answers = [
-    quizInstance.getCorrectAnswer(index),
-    ...quizInstance.getIncorrectAnswers(index)
-  ];
-  return shuffleArray(answers);
+  const slicedAnswers = [];
+  for (let i = 0; i < answers.length; i=i+4) {
+    slicedAnswers.push(shuffleArray(answers.slice(i, i+4)));
+  }
+  module.exports.answers = slicedAnswers;
 };
 
 const shuffleArray = ([...array]) => {
@@ -76,10 +31,9 @@ const shuffleArray = ([...array]) => {
   }
   return array;
 };
-*/
+
 responseQuizData()
-  .then(value => {
-    //console.log(value);
-    module.exports.value = value;
+  .then(quizData => {
+    module.exports.quizData = quizData;
   })
   .catch(error => console.log(error))
