@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const responseQuizData = async () => {
+const fetchQuizData = async () => {
   const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
   const response = await fetch(API_URL);
   const quizData = await response.json();
@@ -32,7 +32,7 @@ const shuffleArray = ([...array]) => {
   return array;
 };
 
-responseQuizData()
+fetchQuizData()
   .then(quizData => {
     module.exports.quizData = quizData;
   })
