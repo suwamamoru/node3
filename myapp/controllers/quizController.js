@@ -1,10 +1,9 @@
-const quizScript = require('../public/javascripts/quiz');
+const quizScript = require('../dist/bundle');
 const quizAPI = require('../models/quizAPI');
 
 exports.getQuizPage = (req, res) => {
   res.render('quizView');
 };
-
 
 exports.getQuizScript = (req, res) => {
   res.status(200).send(quizScript);

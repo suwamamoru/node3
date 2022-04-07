@@ -1,48 +1,5 @@
-class Quiz {
-  constructor(quizData) {
-    this._quizzes = quizData.results;
-    this._correctAnswersNum = 0;
-  }
-  
-  getQuizCategory(index) {
-    return this._quizzes[index - 1].category;
-  }
-  
-  getQuizDifficulty(index) {
-    return this._quizzes[index - 1].difficulty;
-  }
-  
-  getNumOfQuiz() {
-    return this._quizzes.length;
-  }
-  
-  getQuizQuestion(index) {
-    return this._quizzes[index - 1].question;
-  }
-  
-  getCorrectAnswer(index) {
-    return this._quizzes[index - 1].correct_answer;
-  }
-  
-  getIncorrectAnswers(index) {
-    return this._quizzes[index - 1].incorrect_answers;
-  }
-  
-  countCorrectAnswersNum(index, answer) {
-    const correctAnswer = this._quizzes[index - 1].correct_answer;
-    if (answer === correctAnswer) {
-      return this._correctAnswersNum++;
-    }
-  }
-  
-  getCorrectAnswersNum() {
-    return this._correctAnswersNum;
-  }
-}
+import { Quiz } from './modules/class';
 
-// 「document is not defind」エラーが発生する。
-// document はブラウザで JavaScript を実行する際に使用可能なインターフェイスで、
-// Node.js で実行する際には提供されないので未定義の変数になる。
 const titleElement = document.getElementById('title');
 const questionElement = document.getElementById('question');
 const answersContainer = document.getElementById('answers');
@@ -125,9 +82,3 @@ const finishQuiz = (quizInstance) => {
     location.reload();
   });
 };
-
-module.exports.Quiz = Quiz;
-module.exports.fetchQuizData = fetchQuizData();
-module.exports.setNextQuiz = setNextQuiz();
-module.exports.makeQuiz = makeQuiz();
-module.exports.finishQuiz = finishQuiz();
