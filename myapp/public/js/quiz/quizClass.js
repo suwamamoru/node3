@@ -40,4 +40,4 @@ class Quiz {
   }
 }
 
-export { Quiz };
+export { Quiz }

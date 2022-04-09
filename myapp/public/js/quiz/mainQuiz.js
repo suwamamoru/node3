@@ -1,4 +1,4 @@
-import { Quiz } from './modules/class';
+import { Quiz } from './quizClass.js';
 
 const titleElement = document.getElementById('title');
 const questionElement = document.getElementById('question');
@@ -11,8 +11,6 @@ startButton.addEventListener('click', () => {
   startButton.hidden = true;
   fetchQuizData(1);
 });
-
-const fetch = require('node-fetch');
 
 const fetchQuizData = async (index) => {
   titleElement.textContent = '取得中';
